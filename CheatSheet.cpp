@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <array>
 
 // Entity class just to view how Smart Pointers work, see referenced video
 class Entity {
@@ -11,6 +12,8 @@ class Entity {
 
 // Reference: https://docs.microsoft.com/en-us/cpp/cpp/?view=msvc-160
 int main() {
+    static const int arraySize = 5;
+
 // Just a quick reference of basic C++
     // TYPES:
       bool myTrueBool = true;   // could also be 1 
@@ -84,18 +87,37 @@ int main() {
       memory. However, they provide much greater type safety, and support iterators that 
       are guaranteed to point to a valid location within the sequence. */
       // original array, better to use containers
-      static const int arraySize = 5;
+      std::cout << "Print a regular array." << std::endl;
       int myArray[arraySize] = {1, 2, 3, 4, 5}; // created on the stack, deletes once exiting the scope.
-      for (int i = 0; i < 5; i++) {std::cout << myArray[i] << std::endl;}
+      for (int i = 0; i < arraySize; i++) {std::cout << myArray[i] << std::endl;}
       myArray[0] = 6;
-      std::cout << myArray[0] << std::endl << std::endl;
+      std::cout << myArray[0] << std::endl;
 
+      std::cout << "Print a pointer to an array." << std::endl;
       int* anotherArray = new int[arraySize];   // created on the heap
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < arraySize; i++) {
           anotherArray[i] = i;
           std::cout << anotherArray[i] << std::endl;
       }
       delete[] anotherArray;                    // to delete from heap, must do
+
+      /* HOWEVER, better to use either std::array or std::vector
+         Good references: https://stackoverflow.com/questions/4424579/stdvector-versus-stdarray-in-c
+                          https://docs.microsoft.com/en-us/cpp/standard-library/array-class-stl?view=msvc-160
+                          https://docs.microsoft.com/en-us/cpp/standard-library/vector-class?view=msvc-160
+      */
+
+      // Standard Array: std::array<TYPE, SIZE> NAME;
+      // Must #include <array>
+      std::cout << "Print a an array from the standard library." << std::endl;
+      std::array<int, arraySize> myStandardArray;
+      for (int i = 0; i < arraySize; i++) {
+          myStandardArray[i] = i;
+          std::cout << myStandardArray[i] << std::endl;
+      }
+
+      std::cout << "Print a vector array." << std::endl;
+
 
     // EXPRESSIONS:
 
