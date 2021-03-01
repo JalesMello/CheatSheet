@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include <array>
+#include <vector>
 
 // Entity class just to view how Smart Pointers work, see referenced video
 class Entity {
@@ -9,6 +10,9 @@ class Entity {
       Entity() {std::cout << "Created Entity!" << std::endl;}
      ~Entity() {std::cout << "Deleted Entity!" << std::endl;}
 };
+
+// Function declaration
+void myFunction ();
 
 // Reference: https://docs.microsoft.com/en-us/cpp/cpp/?view=msvc-160
 int main() {
@@ -62,21 +66,17 @@ int main() {
       // Smart Pointer (Use this, deletes the memory automatically for you)
         // helpful reference: https://www.youtube.com/watch?v=UOB7-B2MfwA&ab_channel=TheCherno
         // to get access to smart pointers, must "#include <memory>"
-        {
-            /* The simplest smart pointer is the "unique_ptr"
-               It cannot be copied and is limited to it's scope, but very low overhead.
-               It auto-deletes once it exits the scope it's in. */
-            // std::unique_ptr<Entity> myEntity = std::make_unique<Entity>();
-//!!!! ... had to comment out code above because won't compile in C++11, will fix later
-            /* Another smart pointer is the "shared_ptr"
-               It won't auto delete once leaving scope because it has a reference 
-               counter and deletes once references to that pointer are gone. It
-               has more overhead than a "unique_ptr", so "unique_ptr"s should have
-               first preference when using smart pointers.
-               Also, you can make copies of "shared_ptr"s. */
-            // std::shared_ptr<Entity> mySharedEntity = std::make_shared<Entity>();
-//!!!! ... had to comment out code above because won't compile in C++11, will fix later
-        }
+        /* The simplest smart pointer is the "unique_ptr"
+           It cannot be copied and is limited to it's scope, but very low overhead.
+           It auto-deletes once it exits the scope it's in. */
+        std::unique_ptr<Entity> myEntity = std::make_unique<Entity>();
+        /* Another smart pointer is the "shared_ptr"
+           It won't auto delete once leaving scope because it has a reference 
+           counter and deletes once references to that pointer are gone. It
+           has more overhead than a "unique_ptr", so "unique_ptr"s should have
+           first preference when using smart pointers.
+           Also, you can make copies of "shared_ptr"s. */
+        std::shared_ptr<Entity> mySharedEntity = std::make_shared<Entity>();
 
     // ARRAYS:
       /* An array is a sequence of objects of the same type that occupy a contiguous 
@@ -108,7 +108,7 @@ int main() {
       */
 
       // Standard Array: std::array<TYPE, SIZE> NAME;
-      // Must #include <array>
+      // Must #include <array>, safer than raw array, but has more overhead
       std::cout << "Print a an array from the standard library." << std::endl;
       std::array<int, arraySize> myStandardArray;
       for (int i = 0; i < arraySize; i++) {
@@ -116,24 +116,104 @@ int main() {
           std::cout << myStandardArray[i] << std::endl;
       }
 
+      // Vector Array: are dynamic in size, use heap memory (slower), don't use if you don't have to
+      // references: https://docs.microsoft.com/en-us/cpp/standard-library/vector-class?view=msvc-160
       std::cout << "Print a vector array." << std::endl;
-
-
-    // EXPRESSIONS:
-
-
-    // STATEMENTS:
-
+      std::vector<int> myVector;
+      for (int i = 0; i < arraySize; i++) {
+          myVector.push_back(i);
+          std::cout << myStandardArray[i] << std::endl;
+      }
 
     // LOOPS:
+      // While Loop
+      int loopCount = 0;
+      std::cout << std::endl;
+      std::cout << "This is a while loop:" << std::endl;
+      while (loopCount < arraySize) {
+        std::cout << "While Loop Count: " << loopCount << std::endl;
+        loopCount++;
+      };
+      loopCount = 0; // reset loopCount
 
+      // Do-While Loop
+      std::cout << "This is a do-while loop:" << std::endl;
+      do {
+        std::cout << "Do-While Loop Count: " << loopCount << std::endl;
+        loopCount++;
+      } while (loopCount < arraySize);
+      loopCount = 0; // reset loopCount
+      
+      // For Loop, see arrays above.
+      
+      // Nested Loop
+      std::cout << "This is a nested loop:" << std::endl;
+      for (int i = 0; i < arraySize; i++) {
+        std::cout << "Nested Loop Count: " << i << std::endl;
+        for (char a = 'A'; a < 68; a++) {
+          std::cout << "   " << a << std::endl;
+        }
+      }
 
-    // BRANCHING:
+    // CONDITIONS/BRANCHING: reference: https://www.w3schools.com/cpp/cpp_conditions.asp
+    /* C++ supports the usual logical conditions from mathematics:
+       Less than:                 a < b
+       Less than or equal to:     a <= b
+       Greater than:              a > b
+       Greater than or equal to:  a >= b
+       Equal to:                  a == b
+       Not Equal to:              a != b
 
+       C++ has the following conditional statements:
+       Use if to specify a block of code to be executed, if a specified condition is true
+       Use else to specify a block of code to be executed, if the same condition is false
+       Use else if to specify a new condition to test, if the first condition is false
+       Use switch to specify many alternative blocks of code to be executed */
 
-    // FUNCTIONS:
-  
-  
+    if (true)
+      std::cout << "Im a true 'if' statement" << std::endl;
+    else if (false)
+      std::cout << "Im a false 'else if' statement" << std::endl; //will never get printed
+    else
+      std::cout << "Im just an 'else' statement" << std::endl;    //will never get printed
+
+    std::string coolStatement = (true) ? "I'm a really cool short hand if (aka Ternary Operator)!" : "Meh.";
+    std::cout << coolStatement << std::endl;
+
+    switch (arraySize) {
+      case 1:
+        std::cout << "Monday" << std::endl;
+        break;
+      case 2:
+        std::cout << "Tuesday" << std::endl;
+        break;
+      case 3:
+        std::cout << "Wednesday" << std::endl;
+        break;
+      case 4:
+        std::cout << "Thursday" << std::endl;
+        break;
+      case 5:
+        std::cout << "Friday" << std::endl;
+        break;
+      case 6:
+        std::cout << "Saturday" << std::endl;
+        break;
+      case 7:
+        std::cout << "Sunday" << std::endl;
+        break;
+      default:
+        std::cout << "You got it all wrong!" << std::endl;
+    }
+
+    // FUNCTIONS: the function call
+      myFunction();
   
   return 0;
+}
+
+// Function definition
+void myFunction (){
+  std::cout << std::endl <<  "Hey, you just called myFunction!" << std:: endl << std::endl;
+  return;
 }
